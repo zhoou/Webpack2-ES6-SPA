@@ -1,5 +1,5 @@
-# webpack2.2 demo
-> A demo to show how to use webpack2.
+# webpack2 demo
+> A demo to learn how to use webpack2 and html5...
 
 ## build setup
 #### Init

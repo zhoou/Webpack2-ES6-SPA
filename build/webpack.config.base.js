@@ -2,11 +2,12 @@ var path = require('path');
 var webpack = require('webpack');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-//var validate = require('webpack-validator');  目前最新v2.3版本无法兼容检测webpack2
+var ChunkManifestPlugin = require("chunk-manifest-webpack-plugin");
+// var validate = require('webpack-validator');   // 目前最新v2.3版本无法兼容检测webpack2
 
 var config = {
     entry: {
-        main: './app/index.js',
+        main: './app/js/pages/index.js',
         vendor: ['jquery', 'bootstrap']
     },
     output: {
@@ -16,7 +17,10 @@ var config = {
     },
     resolve: {
         extensions: ['.js', '.json'],
-        modules: [path.join(__dirname, 'src'), 'node_modules']
+        modules: [path.join(__dirname, 'src'), 'node_modules'],
+        alias: {
+            'cssPath': path.resolve(__dirname, '../app/contents/css')
+        }
     },
     plugins: [
         new webpack.LoaderOptionsPlugin({
@@ -53,6 +57,10 @@ var config = {
                 removeComments: false,
                 collapseWhitespace: false
             }
+        }),
+        new ChunkManifestPlugin({
+            filename: "chunk-manifest.json",
+            manifestVariable: "webpackManifest"
         })
     ],
     module: {
@@ -62,10 +70,22 @@ var config = {
                 use: ExtractTextPlugin.extract({
                     use: 'css-loader'
                 })
-            }
+            },
+            {
+                test: /\.(woff2?|eot|ttf|otf|svg)(\?.*)?$/,
+                loader: 'file-loader',
+                query: {
+                    limit: 10000,
+                    name: path.posix.join('static', 'fonts/[name].[hash:8].[ext]')
+                }
+            },
+            // {
+            //     test: require.resolve("some-module"),
+            //     use: 'imports-loader?this=>window'
+            // }
         ]
     }
 };
 
 module.exports = config;
-//module.exports = validate(config);
+// module.exports = validate(config);
