@@ -22,11 +22,41 @@ var config = {
             'cssPath': path.resolve(__dirname, '../app/contents/css')
         }
     },
+    module: {
+        rules: [
+            {
+                test: /\.css$/,
+                use: ExtractTextPlugin.extract({
+                    use: 'css-loader'
+                })
+            },
+            {
+                test: /\.(woff2?|eot|ttf|otf|svg)(\?.*)?$/,
+                loader: 'file-loader',
+                query: {
+                    limit: 10000,
+                    name: path.posix.join('static', 'fonts/[name].[hash:8].[ext]')
+                }
+            },
+            {
+                test: /\.js$/,
+                loader: 'babel-loader',
+                exclude: /node_modules/,
+                query: {
+                    presets: [ ["es2015", { "modules": false }]]
+                }
+            }
+            // {
+            //     test: require.resolve("some-module"),
+            //     use: 'imports-loader?this=>window'
+            // }
+        ]
+    },
     plugins: [
         new webpack.LoaderOptionsPlugin({
             minimize: true
         }),
-        new ExtractTextPlugin('styles.css'),
+        new ExtractTextPlugin('static/styles.css'),
         new webpack.optimize.CommonsChunkPlugin({
             name: ['vendor'], // Specify the common bundle's name.
             minChunks: Infinity
@@ -59,32 +89,10 @@ var config = {
             }
         }),
         new ChunkManifestPlugin({
-            filename: "chunk-manifest.json",
+            filename: "static/chunk-manifest.json",
             manifestVariable: "webpackManifest"
         })
-    ],
-    module: {
-        rules: [
-            {
-                test: /\.css$/,
-                use: ExtractTextPlugin.extract({
-                    use: 'css-loader'
-                })
-            },
-            {
-                test: /\.(woff2?|eot|ttf|otf|svg)(\?.*)?$/,
-                loader: 'file-loader',
-                query: {
-                    limit: 10000,
-                    name: path.posix.join('static', 'fonts/[name].[hash:8].[ext]')
-                }
-            },
-            // {
-            //     test: require.resolve("some-module"),
-            //     use: 'imports-loader?this=>window'
-            // }
-        ]
-    }
+    ]
 };
 
 module.exports = config;

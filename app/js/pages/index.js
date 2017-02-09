@@ -1,12 +1,16 @@
 import _ from 'lodash';
-require('bootstrap/dist/css/bootstrap.min.css')
-require('cssPath/main.css')
+require('bootstrap/dist/css/bootstrap.min.css');
+require('cssPath/main.css');
 
-function component () {
-    // var main = document.getElementById('hello');
-    // var element = document.createElement('div');
-    // element.innerHTML = _.join(['hello','world!'], ' ');
-    // main.appendChild(element);
+function component() {
+  let navs = document.querySelector('#navs');
+  navs.addEventListener('click', function (event) {
+    event.preventDefault();
+    //navs.querySelector('a').className= "";
+    let target = event.target;
+    target.className += 'active';
+    //console.log(navs.querySelectorAll('a'))
+  });
 }
 
 // 相当于 $(document).ready(eventHandler);

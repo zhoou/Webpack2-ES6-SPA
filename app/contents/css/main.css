@@ -36,7 +36,7 @@ nav a:link, nav a:visited {
 	margin: 5px;
 }
 
-nav a:hover {
+nav a:hover, nav a.active {
 	color: white;
 	background-color: #F47D31;
 }
