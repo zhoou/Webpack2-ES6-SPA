@@ -6,10 +6,17 @@ function component() {
   let navs = document.querySelector('#navs');
   navs.addEventListener('click', function (event) {
     event.preventDefault();
-    //navs.querySelector('a').className= "";
+
+    // 去除同目录下所有a元素的active样式
+    let a = this.querySelectorAll('a');
+    for (let i = 0; i < a.length; i++) {
+      a[i].className = '';
+    }
+
     let target = event.target;
-    target.className += 'active';
-    //console.log(navs.querySelectorAll('a'))
+    if (target.nodeName === 'A') {
+      target.className += 'active';
+    }
   });
 }
 
