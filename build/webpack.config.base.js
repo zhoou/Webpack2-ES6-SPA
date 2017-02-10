@@ -8,7 +8,7 @@ var ChunkManifestPlugin = require("chunk-manifest-webpack-plugin");
 var config = {
     entry: {
         main: './app/js/pages/index.js',
-        vendor: ['jquery', 'bootstrap']
+        vendor: ['httpRequestJs', 'commonJs']
     },
     output: {
         path: path.resolve(__dirname, '../dist'),  // __dirname 当前路径
@@ -19,7 +19,10 @@ var config = {
         extensions: ['.js', '.json'],
         modules: [path.join(__dirname, 'src'), 'node_modules'],
         alias: {
-            'cssPath': path.resolve(__dirname, '../app/contents/css')
+            'cssPath': path.resolve(__dirname, '../app/contents/css'),
+            'httpRequestJs': path.resolve(__dirname, '../app/js/httpRequest.js'),
+            'commonJs': path.resolve(__dirname, '../app/js/common.js'),
+            'viewsPath': path.resolve(__dirname, '../app/views'),
         }
     },
     module: {
@@ -43,7 +46,13 @@ var config = {
                 loader: 'babel-loader',
                 exclude: /node_modules/,
                 query: {
-                    presets: [ ["es2015", { "modules": false }]]
+                    presets: ["es2015"],
+                    ignore: [
+                        "jquery.js",
+                        "jquery.min.js",
+                        "bootstrap.js",
+                        "bootstrap.min.js"
+                    ]
                 }
             }
             // {
@@ -77,6 +86,10 @@ var config = {
             },
             comments: false
         }),
+        new ChunkManifestPlugin({
+            filename: "static/chunk-manifest.json",
+            manifestVariable: "webpackManifest"
+        }),
         new HtmlWebpackPlugin({
             filename: 'index.html',
             template: path.join(__dirname, '../index.html'),
@@ -84,13 +97,28 @@ var config = {
             inject: 'true',
             hasg: 'true',
             minify: {
-                removeComments: false,
-                collapseWhitespace: false
+                removeComments: true,
+                collapseWhitespace: true
             }
         }),
-        new ChunkManifestPlugin({
-            filename: "static/chunk-manifest.json",
-            manifestVariable: "webpackManifest"
+        new HtmlWebpackPlugin({
+            filename: 'views/default.html',
+            template: path.join(__dirname, '../app/views/default.html'),
+            inject: 'true',
+            hasg: 'true',
+            minify: {
+                removeComments: true,
+                collapseWhitespace: true
+            }
+        }),
+        new HtmlWebpackPlugin({
+            filename: 'views/html5demo.html',
+            template: path.join(__dirname, '../app/views/html5demo.html'),
+            inject: 'true',
+            minify: {
+                removeComments: true,
+                collapseWhitespace: true
+            }
         })
     ]
 };

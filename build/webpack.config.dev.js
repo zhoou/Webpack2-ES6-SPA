@@ -5,8 +5,8 @@ var webpackMerge = require('webpack-merge');
 module.exports = webpackMerge(baseWebpackConfig, {
     devtool: '#source-map',
     output: {
-        filename: '[name].[hash:8].js',
-        chunkFilename: '[name].[hash:8].js'
+        filename: 'js/[name].[hash:8].js',
+        chunkFilename: 'js/[name].[hash:8].js'
     },
     plugins: [
         // new webpack.optimize.OccurrenceOrderPlugin(), // by default in webpack2

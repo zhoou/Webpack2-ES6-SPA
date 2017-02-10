@@ -4,8 +4,8 @@ const commonConfig = require('./webpack.config.base');
 
 module.exports = webpackMerge(commonConfig, {
     output: {
-        filename: '[name].[chunkhash:8].js',    // chunkhash
-        chunkFilename: '[name].[chunkhash:8].js'
+        filename: 'js/[name].[chunkhash:8].js',
+        chunkFilename: 'js/[name].[chunkhash:8].js'
     },
     plugins: [
         new webpack.LoaderOptionsPlugin({
