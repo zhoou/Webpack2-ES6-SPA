@@ -6,14 +6,31 @@ let common = {
     // 新增样式
     addClass: function (elements, cName) {
         if (!common.hasClass(elements, cName)) {
-            elements.className += " " + cName;
+            elements.className += "" + cName;
         };
     },
     // 删除样式
     removeClass: function (elements, cName) {
         if (common.hasClass(elements, cName)) {
-            elements.className = elements.className.replace(new RegExp("(\\s|^)" + cName + "(\\s|$)"), " "); // replace方法是替换 
+            elements.className = elements.className.replace(new RegExp("(\\s|^)" + cName + "(\\s|$)"), ""); // replace方法是替换 
         };
+    },
+    // 获取webpack配置入口
+    getEntry: function (globPath, pathDir) {
+        var files = glob.sync(globPath);
+        var entries = {},
+            entry, dirname, basename, pathname, extname;
+
+        for (var i = 0; i < files.length; i++) {
+            entry = files[i];
+            dirname = path.dirname(entry);
+            extname = path.extname(entry);
+            basename = path.basename(entry, extname);
+            pathname = path.join(dirname, basename);
+            pathname = pathDir ? pathname.replace(new RegExp('^' + pathDir), '') : pathname;
+            entries[pathname] = ['./' + entry];
+        }
+        return entries;
     }
 };
 

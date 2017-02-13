@@ -1,8 +1,8 @@
 import _ from 'lodash';
 import httpRequestModel from 'httpRequestJs'
 import common from 'commonJs'
-require('bootstrap/dist/css/bootstrap.min.css');
-require('cssPath/main.css');
+import 'bootstrap/dist/css/bootstrap.min.css';
+import 'cssPath/main.css';
 
 function component() {
   // 初始化
@@ -22,7 +22,7 @@ function component() {
     if (target.nodeName === 'A') {
       common.addClass(target, 'active');
 
-      let href = target.getAttribute('data-href')
+      let href = target.getAttribute('data-href');
       loadHtml(href);
     }
   });
@@ -35,13 +35,6 @@ function loadHtml(name) {
     document.querySelector('#content').innerHTML = result;
     let currentMod = require('./' + name + '.js');
     currentMod.init();
-
-    // require.ensure([], function () {
-    //   console.log('2222');
-    //   let currentMod = require("./html5demo.js");
-    //   currentMod.init();
-    // }, name);
-
   }, function (err) {
     console.log(err);
   })

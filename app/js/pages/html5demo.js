@@ -1,3 +1,5 @@
+import 'bootstrap/dist/css/bootstrap.min.css';
+
 let html5DemoModel = {
     totalDistance: 0.0,
     lastLat: 0,
@@ -26,29 +28,31 @@ let html5DemoModel = {
         document.querySelector('#status').innerHTML = message;
     },
 
-    loadDemo: function () {
+    initCoords: function () {
+        console.log('initCoords');
         if (navigator.geolocation) {
             html5DemoModel.updateStatus('Html5 Geolocation is supported in your browser.');
-            navigator.geolocation.watchPosition(html5DemoModel.updateLocation(), html5DemoModel.handleLocationError(), { maximumAge: 20000 });
+            navigator.geolocation.getCurrentPosition(this.updateLocation, this.handleLocationError, { timeout: 10000 });
+            // navigator.geolocation.watchPosition(html5DemoModel.updateLocation(), html5DemoModel.handleLocationError(), { maximumAge: 20000 });
         }
     },
 
     // 错误处理代码
     handleLocationError: function (error) {
         switch (error.code) {
-            case 0: updateStatus('There was an error while retrieving your location: ' + error.message); break;
-            case 1: updateStatus('The user prevented this page from retrieving a location'); break;
-            case 2: updateStatus('The browser was unable to determine your location: ' + error.message); break;
-            case 3: updateStatus('The browser timed out before retrieving the location.'); break;
+            case 0: html5DemoModel.updateStatus('There was an error while retrieving your location: ' + error.message); break;
+            case 1: html5DemoModel.updateStatus('The user prevented this page from retrieving a location'); break;
+            case 2: html5DemoModel.updateStatus('The browser was unable to determine your location: ' + error.message); break;
+            case 3: html5DemoModel.updateStatus('The browser timed out before retrieving the location.'); break;
             default: break;
         }
     },
 
     updateLocation: function (position) {
-        console.log('updateLocation')
-        let latitude = position.coords.latitude;
-        let longitude = position.coords.longitude;
-        let accuracy = position.coords.accuracy;
+        let coords = position.coords;
+        let latitude = coords.latitude;
+        let longitude = coords.longitude;
+        let accuracy = coords.accuracy;
         let timestamp = position.timestamp;
 
         document.querySelector('#latitude').innerHTML = latitude;
@@ -78,8 +82,7 @@ let html5DemoModel = {
     },
 
     init: function () {
-        console.log('init');
-        window.addEventListener('load', html5DemoModel.loadDemo(), true);
+        window.addEventListener('load', html5DemoModel.initCoords(), true);
     }
 };
 
