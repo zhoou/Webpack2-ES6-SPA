@@ -1,6 +1,7 @@
 var webpack = require('webpack');
 var baseWebpackConfig = require('./webpack.config.base');
 var webpackMerge = require('webpack-merge');
+var config = require('../config');
 
 module.exports = webpackMerge(baseWebpackConfig, {
     devtool: '#source-map',
@@ -10,10 +11,10 @@ module.exports = webpackMerge(baseWebpackConfig, {
     },
     plugins: [
         // new webpack.optimize.OccurrenceOrderPlugin(), // by default in webpack2
-        new webpack.HotModuleReplacementPlugin(),  // 把plugins里面的热替换插件注释掉就可使用chunkhash
+        new webpack.HotModuleReplacementPlugin(), // 把plugins里面的热替换插件注释掉就可使用chunkhash
         new webpack.NoErrorsPlugin(),
         new webpack.DefinePlugin({
-            'process.env.NODE_ENV': JSON.stringify('dev')
+            'process.env.NODE_ENV': JSON.stringify(config.dev.NODE_ENV)
         })
     ]
 })

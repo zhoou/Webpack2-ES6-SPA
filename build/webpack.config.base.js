@@ -8,11 +8,11 @@ var glob = require('glob');
 
 var config = {
     entry: {
-        index: './app/js/pages/index.js',
+        index: './src/js/pages/index.js',
         vendor: ['httpRequestJs', 'commonJs']
     },
     output: {
-        path: path.resolve(__dirname, '../dist'),  // __dirname 当前路径
+        path: path.resolve(__dirname, '../dist'), // __dirname 当前路径
         publicPath: '/',
         sourceMapFilename: '[name].map'
     },
@@ -20,15 +20,14 @@ var config = {
         extensions: ['.js', '.json'],
         modules: [path.join(__dirname, 'src'), 'node_modules'],
         alias: {
-            'cssPath': path.resolve(__dirname, '../app/contents/css'),
-            'httpRequestJs': path.resolve(__dirname, '../app/js/httpRequest.js'),
-            'commonJs': path.resolve(__dirname, '../app/js/common.js'),
-            'viewsPath': path.resolve(__dirname, '../app/views'),
+            'cssPath': path.resolve(__dirname, '../src/css'),
+            'httpRequestJs': path.resolve(__dirname, '../src/js/httpRequest.js'),
+            'commonJs': path.resolve(__dirname, '../src/js/common.js'),
+            'viewsPath': path.resolve(__dirname, '../src/views'),
         }
     },
     module: {
-        rules: [
-            {
+        rules: [{
                 test: /\.css$/,
                 use: ExtractTextPlugin.extract({
                     use: 'css-loader'
@@ -56,10 +55,6 @@ var config = {
                     ]
                 }
             }
-            // {
-            //     test: require.resolve("some-module"),
-            //     use: 'imports-loader?this=>window'
-            // }
         ]
     },
     plugins: [
@@ -105,19 +100,19 @@ var config = {
     ]
 };
 
-let pages = Object.keys(getEntry('app/views/**/*.html', 'app/views/'));
-pages.forEach(function (pathname) {
+let pages = Object.keys(getEntry('src/views/**/*.html', 'src/views/'));
+pages.forEach(function(pathname) {
     let name = pathname.split('\\');
     let filePath = name.length > 1 ? (name[name.length - 2] === 'views' ? 'views/' : 'views/' + name[name.length - 2]) : '';
     let conf = {
         filename: filePath + name[name.length - 1] + '.html', //生成的html存放路径，相对于path
         template: path.join(__dirname, '../' + pathname + '.html'), //html模板路径
-        inject: true,  //js插入的位置，true/'head'/'body'/false
+        inject: true, //js插入的位置，true/'head'/'body'/false
         /*
-        * 压缩这块，调用了html-minify，会导致压缩时候的很多html语法检查问题，
-        * 如在html标签属性上使用{{...}}表达式，所以很多情况下并不需要在此配置压缩项，
-        * 另外，UglifyJsPlugin会在压缩代码的时候连同html一起压缩。
-        * 为避免压缩html，需要在html-loader上配置'html?-minimize'，见loaders中html-loader的配置。
+         * 压缩这块，调用了html-minify，会导致压缩时候的很多html语法检查问题，
+         * 如在html标签属性上使用{{...}}表达式，所以很多情况下并不需要在此配置压缩项，
+         * 另外，UglifyJsPlugin会在压缩代码的时候连同html一起压缩。
+         * 为避免压缩html，需要在html-loader上配置'html?-minimize'，见loaders中html-loader的配置。
          */
         minify: { //压缩HTML文件
             removeComments: true, //移除HTML中的注释
@@ -125,7 +120,7 @@ pages.forEach(function (pathname) {
         }
     };
     if (pathname in config.entry) {
-        conf.favicon = 'app/images/favicon.ico';
+        conf.favicon = 'src/images/favicon.ico';
         // conf.inject = 'body';
         // conf.chunks = ['vendor', pathname];
         // conf.hash = true;
