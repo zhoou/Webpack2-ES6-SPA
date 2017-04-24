@@ -28,20 +28,6 @@ var config = {
     },
     module: {
         rules: [{
-                test: /\.css$/,
-                use: ExtractTextPlugin.extract({
-                    use: 'css-loader'
-                })
-            },
-            {
-                test: /\.(woff2?|eot|ttf|otf|svg)(\?.*)?$/,
-                loader: 'file-loader',
-                query: {
-                    limit: 10000,
-                    name: path.posix.join('static', 'fonts/[name].[hash:8].[ext]')
-                }
-            },
-            {
                 test: /\.js$/,
                 loader: 'babel-loader',
                 exclude: /node_modules/,
@@ -54,7 +40,38 @@ var config = {
                         "bootstrap.min.js"
                     ]
                 }
-            }
+            },
+            {
+                test: /\.css$/,
+                use: ExtractTextPlugin.extract({
+                    use: 'css-loader'
+                })
+            },
+            {
+                test: /\.html$/,
+                loader: 'html-loader',
+                options: {
+                    minimize: true,
+                    removeComments: false,
+                    collapseWhitespace: false
+                }
+            },
+            {
+                test: /\.(png|gif|jpe?g)(\?.*)?$/,
+                loader: 'url-loader',
+                query: {
+                    limit: 10000,
+                    name: path.posix.join('static', 'images/[name].[hash:8].[ext]')
+                }
+            },
+            {
+                test: /\.(woff2?|eot|ttf|otf|svg)(\?.*)?$/,
+                loader: 'file-loader',
+                query: {
+                    limit: 10000,
+                    name: path.posix.join('static', 'fonts/[name].[hash:8].[ext]')
+                }
+            },
         ]
     },
     plugins: [
